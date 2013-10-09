@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 gem "sinatra"
 gem "sinatra-contrib"
 
+gem 'builder'
 gem "twilio-ruby", "~> 3.11"
 
 gem "haml"
@@ -11,6 +12,8 @@ gem "rotp"
 
 gem "data_mapper"
 gem 'newrelic_rpm'
+
+gem 'filepicker-rails'
 
 # group :development do
 #   gem 'sqlite3'

@@ -30,6 +30,20 @@ class VerifiedUser
 
 end
 
+class Baby
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :name, String
+  property :time, String
+  property :sex, String
+  property :date, String
+  property :weight, String
+  property :length, String
+  property :media_url, String
+
+end
+
 class Message
   include DataMapper::Resource
 
@@ -185,20 +199,29 @@ end
 # Send the notification to all of your subscribers
 route :get, :post, '/notify_all' do
   @users = VerifiedUser.all
-  @baby_name = params[:baby_name]
+  @name = params[:name]
   @time = params[:time]
   @sex = params[:sex]
   @date = params[:date]
   @weight = params[:weight]
+  @media_url = params[:filepicker_url]
+
+  baby = Baby.create(
+    :name => @name,
+    :time => params[:time]
+    :sex => params[:sex]
+    :date => params[:date]
+    :weight => params[:weight]
+    :media_url => params[:filepicker_url]
+  )
 
   msg = "Jarod and Sarah have very exciting news! At #{@time} on #{@date} a beautiful little #{@sex} named #{@baby_name} was born. Let the celebrations begin!"
   @users.each do |user|
     if user.verified == true
       @phone_number = user.phone_number
       @name = user.name
-      @picture_url = "http://www.topdreamer.com/wp-content/uploads/2013/08/funny_babies_faces.jpg"
       if user.send_mms == 'yes'
-        sendMessage('TWILIO', @phone_number, "Hi #{@name}! #{msg}", @picture_url)
+        sendMessage('TWILIO', @phone_number, "Hi #{@name}! #{msg}", baby.media_url)
       else
         sendMessage(@twilio_number, @phone_number, "Hi #{@name}! #{msg}")
       end

@@ -1,0 +1,1 @@
+config.filepicker_rails.api_key = ENV['INK_API_KEY']
